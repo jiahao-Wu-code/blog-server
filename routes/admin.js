@@ -1,10 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { loginService, updateAdminService } = require('../service/adminService');
+const { ValidateError } = require('../utils/error');
 const { formatResponse, parseToken } = require('../utils/tool');
 
 // 登录
 router.post('/login', async function (req, res, next) {
+    // 验证码校验
+    if (req.body.captcha.toLowerCase() !== req.session.captcha.toLowerCase()) {
+        // 验证码错误
+        throw new ValidateError("验证码错误")
+    }
     const result = await loginService(req.body);
     if (result.token) {
         res.setHeader('authentication', result.token);
