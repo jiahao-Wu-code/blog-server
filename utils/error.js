@@ -23,6 +23,12 @@ exports.ForbiddenError = class extends ServiceError {
     }
 }
 
+exports.UploadError = class extends ServiceError {
+    constructor(message) {
+        super(message, 413);
+    }
+}
+
 // 验证错误
 exports.ValidateError = class extends ServiceError {
     constructor(message) {
