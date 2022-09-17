@@ -1,5 +1,6 @@
 const { validate } = require("validate.js");
 const { addBlogTypeDao, getAllBlogTypeDao, getOneBlogTypeDao, UpdateOneBlogTypeDao, deleteOneBlogTypeDao } = require("../dao/blogTypeDao");
+const blogTypeModel = require("../dao/Model/blogTypeModel");
 const { ValidateError } = require("../utils/error");
 const { formatResponse, parseData } = require("../utils/tool");
 
@@ -56,4 +57,13 @@ module.exports.updateOneBlogTypeService = async function (id, blogTypeInfo) {
 module.exports.deleteOneBlogTypeService = async function (id) {
     await deleteOneBlogTypeDao(id);
     return formatResponse(200, "", true)
+}
+
+// 新增文章后，对应文章分类文章数要加1
+
+module.exports.addBlogNumber = async function (id) {
+    const data = await blogTypeModel.findByPk(id);
+    data.articleCount++;
+    await data.save();
+    return;
 }
