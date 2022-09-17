@@ -22,6 +22,7 @@ var adminRouter = require('./routes/admin');
 var captchRouter = require('./routes/captcha');
 var bannerRouter = require('./routes/banner');
 var uploadRouter = require('./routes/upload');
+var blogTypeRouter = require('./routes/blogType');
 
 
 // view engine setup
@@ -66,6 +67,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api/res/captcha', captchRouter);
 app.use('/api/banner', bannerRouter);
 app.use('/api/upload', uploadRouter);
+app.use('/api/blogtype', blogTypeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
