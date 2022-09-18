@@ -2,9 +2,27 @@ const sequelize = require("./dbConnect");
 const adminModel = require("./Model/adminModel");
 const bannerModel = require("./Model/bannerModel");
 const blogTypeModel = require("./Model/blogTypeModel");
+const blogModel = require("./Model/blogModel");
 
 const md5 = require("md5");
 (async function () {
+    // 定义模型之间的关系
+
+    // 博客 和 博客类型
+    blogTypeModel.hasMany(blogModel, {
+        foreignKey: "categoryId",
+        targetKey: "id"
+    })
+
+    blogModel.belongsTo(blogTypeModel, {
+        foreignKey: "categoryId",
+        targetKey: "id",
+        as: "category"
+    })
+
+
+
+
     // 将数据模型和表进行同步
     await sequelize.sync({
         alter: true

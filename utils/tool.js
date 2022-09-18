@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const md5 = require('md5');
 const multer = require('multer');
 const path = require("path");
-const { UploadError } = require('./error')
 
 module.exports.formatResponse = function (code, msg, data) {
     return {
