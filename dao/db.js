@@ -3,6 +3,7 @@ const adminModel = require("./Model/adminModel");
 const bannerModel = require("./Model/bannerModel");
 const blogTypeModel = require("./Model/blogTypeModel");
 const blogModel = require("./Model/blogModel");
+const projectModel = require("./Model/projectModel");
 
 const md5 = require("md5");
 (async function () {

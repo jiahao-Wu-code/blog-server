@@ -1,5 +1,5 @@
 const { validate } = require("validate.js");
-const { addBlogDao, getBlogByPageDao, getBlogByIdDao, updateOneBlogDao, deleteOneBlogDao } = require("../dao/blog.Dao");
+const { addBlogDao, getBlogByPageDao, getBlogByIdDao, updateOneBlogDao, deleteOneBlogDao } = require("../dao/blogDao");
 const { getOneBlogTypeDao } = require("../dao/blogTypeDao");
 const blogTypeModel = require("../dao/Model/blogTypeModel");
 const { ValidateError, NotFoundError } = require("../utils/error");
