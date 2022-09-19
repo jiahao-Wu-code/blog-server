@@ -4,6 +4,7 @@ const bannerModel = require("./Model/bannerModel");
 const blogTypeModel = require("./Model/blogTypeModel");
 const blogModel = require("./Model/blogModel");
 const projectModel = require("./Model/projectModel");
+const messageModel = require("./Model/messageModel");
 
 const md5 = require("md5");
 (async function () {
@@ -21,6 +22,18 @@ const md5 = require("md5");
         as: "category"
     })
 
+    // 评论 和 文章
+
+    blogModel.hasMany(messageModel, {
+        foreignKey: "blogId",
+        target: "id",
+    })
+
+    messageModel.belongsTo(blogModel, {
+        foreignKey: "blogId",
+        target: "id",
+        as: "blog"
+    })
 
 
 
