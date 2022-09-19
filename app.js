@@ -25,6 +25,7 @@ var uploadRouter = require('./routes/upload');
 var blogTypeRouter = require('./routes/blogType');
 var blogRouter = require('./routes/blog');
 var projectRouter = require('./routes/project');
+var messageRouter = require('./routes/message');
 
 
 // view engine setup
@@ -56,6 +57,8 @@ app.use(jwt({
     { url: "/api/blogtype", methods: ["GET"] },
     { url: "/api/blog", methods: ["GET"] },
     { url: "/api/project", methods: ["GET"] },
+    { url: "/api/message", methods: ["GET", "POST"] },
+    { url: "/api/comment", methods: ["GET", "POST"] },
     { url: /\/api\/blog\/\d/, methods: ["GET"] }
   ]
 }))
@@ -69,6 +72,8 @@ app.use('/api/upload', uploadRouter);
 app.use('/api/blogtype', blogTypeRouter);
 app.use('/api/blog', blogRouter);
 app.use('/api/project', projectRouter);
+app.use('/api/comment', messageRouter);
+app.use('/api/message', messageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
