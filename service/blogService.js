@@ -3,14 +3,17 @@ const { addBlogDao, getBlogByPageDao, getBlogByIdDao, updateOneBlogDao, deleteOn
 const { getOneBlogTypeDao } = require("../dao/blogTypeDao");
 const blogTypeModel = require("../dao/Model/blogTypeModel");
 const { ValidateError, NotFoundError } = require("../utils/error");
-const { formatResponse, parseData } = require("../utils/tool");
+const { formatResponse, parseData, parseTOC } = require("../utils/tool");
 const { addBlogNumber } = require("./blogTypeService");
 
 // 新增一个博客
 module.exports.addBlogService = async function (newBlogInfo) {
     // 处理文章TOC
+    newBlogInfo = parseTOC(newBlogInfo);
+    newBlogInfo.toc = JSON.stringify(newBlogInfo.toc)
+    // console.log("newBlogInfo", newBlogInfo)
 
-    newBlogInfo.toc = JSON.stringify('["a":"b"]');
+    // newBlogInfo.toc = JSON.stringify('["a":"b"]');
 
     // 初始化文章信息
 
@@ -88,7 +91,7 @@ module.exports.addBlogService = async function (newBlogInfo) {
         return formatResponse(200, "", data)
     }
     catch (e) {
-        // console.log("e-->", e);
+        console.log("e-->", e);
         throw new ValidateError("数据验证失败")
     }
 
@@ -122,10 +125,10 @@ module.exports.getOneBlogByIdService = async function (id, auth) {
 
 // // 修改某个文章
 module.exports.updateOneBlogService = async function (id, newBlogInfo) {
-    // const res = await updateOneBlogDao(id, newBlogInfo);
     // TOC目录处理
     if (newBlogInfo.htmlContent) {
-        newBlogInfo.toc = JSON.stringify("1234")
+        newBlogInfo = parseTOC(newBlogInfo);
+        newBlogInfo.toc = JSON.stringify(newBlogInfo.toc)
     }
     const { dataValues } = await updateOneBlogDao(id, newBlogInfo);
     return formatResponse(200, "", dataValues)
