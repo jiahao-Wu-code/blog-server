@@ -86,6 +86,7 @@ module.exports.addBlogService = async function (newBlogInfo) {
         }
         await validate.validate(newBlogInfo, blogRule);
         const data = await addBlogDao(newBlogInfo);
+        data.toc = JSON.parse(data.toc);
         // 文章类型下面文章数要自增
         await addBlogNumber(newBlogInfo.categoryId);
         return formatResponse(200, "", data)
@@ -131,6 +132,8 @@ module.exports.updateOneBlogService = async function (id, newBlogInfo) {
         newBlogInfo.toc = JSON.stringify(newBlogInfo.toc)
     }
     const { dataValues } = await updateOneBlogDao(id, newBlogInfo);
+    // console.log("toc", dataValues.toc);
+    dataValues.toc = JSON.parse(dataValues.toc);
     return formatResponse(200, "", dataValues)
 
 
