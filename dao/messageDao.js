@@ -69,3 +69,13 @@ module.exports.deleteMessageDao = async function (id) {
         }
     })
 }
+
+// 根据 文章id 删除评论
+
+module.exports.deleteCommentByBlogIdDao = async function (blogId) {
+    return await messageModel.destroy({
+        where: {
+            blogId,
+        }
+    })
+}
