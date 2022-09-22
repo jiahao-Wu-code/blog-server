@@ -59,4 +59,14 @@ module.exports.deleteOneBlogDao = async function (id) {
             id
         }
     })
-} 
+}
+
+
+// 根据 文章类别id 统计数量
+module.exports.countBlogByType = async function (categoryId) {
+    await blogModel.count({
+        where: {
+            categoryId,
+        }
+    })
+}

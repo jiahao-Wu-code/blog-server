@@ -4,6 +4,7 @@ const fs = require("fs");
 const { addMessageDao, getMessageByPageDao, deleteMessageDao } = require("../dao/messageDao");
 const { formatResponse, parseData } = require("../utils/tool");
 const { getBlogByIdDao } = require("../dao/blogDao");
+const messageModel = require("../dao/Model/messageModel");
 const dir = './public/static/avatar'
 
 
@@ -78,11 +79,12 @@ module.exports.addMessageService = async function (newMessage) {
 // 分页获取 留言 或 评论
 module.exports.getMessageByPageService = async function (pageInfo) {
     // console.log("blogId", pageInfo);
-
+    const count = await messageModel.count()
     const data = await getMessageByPageDao(pageInfo);
     // console.log("data", data)
     return formatResponse(200, "success", {
-        total: data.total,
+        // count,
+        total: count,
         rows: parseData(data.rows)
     })
 }

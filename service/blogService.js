@@ -1,6 +1,7 @@
 const { validate } = require("validate.js");
 const { addBlogDao, getBlogByPageDao, getBlogByIdDao, updateOneBlogDao, deleteOneBlogDao } = require("../dao/blogDao");
 const { getOneBlogTypeDao } = require("../dao/blogTypeDao");
+const { deleteCommentByBlogIdDao } = require("../dao/messageDao");
 const blogTypeModel = require("../dao/Model/blogTypeModel");
 const { ValidateError, NotFoundError } = require("../utils/error");
 const { formatResponse, parseData, parseTOC } = require("../utils/tool");
@@ -131,6 +132,23 @@ module.exports.updateOneBlogService = async function (id, newBlogInfo) {
         newBlogInfo = parseTOC(newBlogInfo);
         newBlogInfo.toc = JSON.stringify(newBlogInfo.toc)
     }
+
+    // 修改文章分类是，对应文章数需要变化
+
+    const { dataValues: oldBlogInfo } = await getBlogByIdDao(id)
+    // 修改了博客分类
+    if (newBlogInfo.categoryId !== oldBlogInfo.categoryId) {
+        const oldBlogTypeInfo = await getOneBlogTypeDao(oldBlogInfo.categoryId);
+        oldBlogTypeInfo.articleCount--
+        await oldBlogInfo.save()
+
+        const newBlogTypeInfo = await getOneBlogTypeDao(newBlogInfo.categoryId);
+        newBlogTypeInfo.articleCount++
+        await newBlogTypeInfo.save()
+
+
+    }
+
     const { dataValues } = await updateOneBlogDao(id, newBlogInfo);
     // console.log("toc", dataValues.toc);
     dataValues.toc = JSON.parse(dataValues.toc);
@@ -138,7 +156,7 @@ module.exports.updateOneBlogService = async function (id, newBlogInfo) {
 
 
 }
-// 删除某个分类
+// 删除某个文章
 module.exports.deleteBlogService = async function (id) {
     const data = await getBlogByIdDao(id);
     // console.log("data", data)
@@ -147,6 +165,7 @@ module.exports.deleteBlogService = async function (id) {
     categoryInfo.articleCount--;
     await categoryInfo.save();
     // TODO: 评论删除
+    await deleteCommentByBlogIdDao(id)
     await deleteOneBlogDao(id)
     return formatResponse(200, "", true)
 
